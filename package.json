@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TiViOpetus/NodeHarjoituksia.git"
+    "url": "git+https://github.com/JoonasPitk/NodeHarjoituksia.git"
   },
   "keywords": [
     "Express",
@@ -17,12 +17,12 @@
     "Electricity",
     "prices"
   ],
-  "author": "Mika Vainio",
+  "author": "JoonasPitk",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/TiViOpetus/NodeHarjoituksia/issues"
+    "url": "https://github.com/JoonasPitk/NodeHarjoituksia/issues"
   },
-  "homepage": "https://github.com/TiViOpetus/NodeHarjoituksia#readme",
+  "homepage": "https://github.com/JoonasPitk/NodeHarjoituksia#readme",
   "dependencies": {
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
