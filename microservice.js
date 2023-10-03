@@ -54,12 +54,22 @@ cron.schedule("*/10 * * * * *", () => {
             return resultset;
           }
 
-          // Call query function and echo results to console.
-          runQuery().then((resultset) => logger(resultset.rows[0]));
+          // Call query function and echo results to log.
+          runQuery().then((resultset) => {
+
+            /* Have clearer messages for added or skipped rows.
+            Otherwise a new row would return "[object Object]"
+            and a skipped row would return "undefined" */
+            if (resultset.rows[0] != undefined) {
+              logger("Added a row.")
+            } else {
+              logger("Skipped a row.")
+            }
+          });  
         });
       });
       lastFetchedDate = dateStr; // Set fetch date to current date.
-      logger("Price data fetched.", lastFetchedDate);
+      logger("Price data fetched on " + lastFetchedDate);
     } else {
       logger("Data has been successfully retrieved earlier today!");
     }
