@@ -74,6 +74,6 @@ cron.schedule("*/10 * * * * *", () => {
       logger("Data has been successfully retrieved earlier today!");
     }
   } catch (error) {
-    logger("An error occurred, trying again in 10 seconds...");
+    logger("An error occurred ("+ error.toString() +"), trying again in 10 seconds...");
   }
 });
