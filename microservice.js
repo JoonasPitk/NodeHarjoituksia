@@ -35,6 +35,8 @@ cron.schedule("*/5 13 * * *", () => {
 
     // If the date of last successful fetch is not the current day, fetch data.
     if (lastFetchedDate != dateStr) {
+
+      // TODO: Add this to the log file.
       console.log("Started fetching price data ");
       getPrices.fetchLatestPriceData().then((json) => {
 
@@ -43,22 +45,29 @@ cron.schedule("*/5 13 * * *", () => {
           let values = [element.startDate, element.price];
 
           // Build an SQL clauset to insert values into table.
-          const sqlClause = "INSERT INTO public.hourly_price VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING *"; 
+          const sqlClause = "INSERT INTO public.hourly_price VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING *";
+
           // Function for running SQL operations asyncronously.
           const runQuery = async () => {
             let resultset = await pool.query(sqlClause, values);
             return resultset;
           }
+
           // Call query function and echo results to console.
+          // TODO: Add this to the log file.
           runQuery().then((resultset) => console.log(resultset.rows[0]))
         });
       });
       lastFetchedDate = dateStr; // Set fetch date to current date.
+
+      // TODO: Add this to the log file.
       console.log("Fetched at", lastFetchedDate)
     } else {
       console.log("Data has been successfully retrieved earlier today!");
     }
   } catch (error) {
+    
+    // TODO: Add this to the log file, with a given error.
     console.log("An error occurred, trying again in 5 minutes until the next hour");
   }
 });
