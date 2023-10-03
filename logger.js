@@ -2,7 +2,7 @@ const fs = require("fs/promises");
 
 async function logger(data) {
   const timestamp = new Date();
-  let entry = data + " @ " + timestamp.toISOString() + "\n";
+  let entry = timestamp.toISOString() + ": " + data + "\n";
   
   try {
     await fs.appendFile("./operations.log", entry);

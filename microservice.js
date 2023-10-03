@@ -30,15 +30,15 @@ const pool = new Pool({
 // Use a date variable to keep track of successful data retrievals.
 let lastFetchedDate = "1.1.2023"; // Initial value, use a settings file in production.
 
-// Try to run an operation in 5 minute intervals from 13 to 14 o'clock.
-cron.schedule("*/10 * 13 * * *", () => {
+// Try to run an operation in 10-second intervals.
+cron.schedule("*/10 * * * * *", () => {
   try {
     let timestamp = new Date(); // Get the current timestamp.
     let dateStr = timestamp.toLocaleDateString(); // Take the date part of the timestamp.
 
     // If the date of last successful fetch is not the current day, fetch data.
     if (lastFetchedDate != dateStr) {
-      logger("Started fetching price data ");
+      logger("Started fetching price data...");
       getPrices.fetchLatestPriceData().then((json) => {
 
         // Loop through prices data, and pick startDate and price elements.
@@ -59,11 +59,11 @@ cron.schedule("*/10 * 13 * * *", () => {
         });
       });
       lastFetchedDate = dateStr; // Set fetch date to current date.
-      logger("Fetched at", lastFetchedDate);
+      logger("Price data fetched.", lastFetchedDate);
     } else {
       logger("Data has been successfully retrieved earlier today!");
     }
   } catch (error) {
-    logger("An error occurred, trying again in 5 minutes until 14 o'clock.");
+    logger("An error occurred, trying again in 10 seconds...");
   }
 });
