@@ -1,20 +1,14 @@
 const fs = require("fs/promises");
 
-async function logger() {
+async function logger(data) {
+  const timestamp = new Date();
+  let entry = data + " @ " + timestamp.toISOString() + "\n";
+  
   try {
-    const timestamp = new Date();
-    const isoTimestamp = timestamp.toISOString();
-    let operation = "Data fetch operation";
-    let status = "processed successfully";
-    let entry = operation + " " + status + " @ " + isoTimestamp + "\n";
-    console.log(entry);
-
     await fs.appendFile("./operations.log", entry);
   } catch (error) {
-      let entry = error + " @ " + isoTimestamp + "\n";
-      console.log(entry);
+      console.log(error + " @ " + timestamp + "\n");
   }
 }
-logger();
 
-// TODO: Create a function to do this; create a log message and timestamp.
+module.exports = { logger }

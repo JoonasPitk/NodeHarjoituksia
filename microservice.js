@@ -9,6 +9,9 @@ const cron = require("node-cron");
 // Homemade library to access price API from porssisahko.net.
 const getPrices = require("./getNewPrices");
 
+// Logger to write operation messages to a log file.
+const { logger } = require("./logger")
+
 
 // APP SETTINGS
 
@@ -28,16 +31,14 @@ const pool = new Pool({
 let lastFetchedDate = "1.1.2023"; // Initial value, use a settings file in production.
 
 // Try to run an operation in 5 minute intervals from 13 to 14 o'clock.
-cron.schedule("*/5 13 * * *", () => {
+cron.schedule("*/10 * 13 * * *", () => {
   try {
     let timestamp = new Date(); // Get the current timestamp.
     let dateStr = timestamp.toLocaleDateString(); // Take the date part of the timestamp.
 
     // If the date of last successful fetch is not the current day, fetch data.
     if (lastFetchedDate != dateStr) {
-
-      // TODO: Add this to the log file.
-      console.log("Started fetching price data ");
+      logger("Started fetching price data ");
       getPrices.fetchLatestPriceData().then((json) => {
 
         // Loop through prices data, and pick startDate and price elements.
@@ -54,20 +55,15 @@ cron.schedule("*/5 13 * * *", () => {
           }
 
           // Call query function and echo results to console.
-          // TODO: Add this to the log file.
-          runQuery().then((resultset) => console.log(resultset.rows[0]))
+          runQuery().then((resultset) => logger(resultset.rows[0]));
         });
       });
       lastFetchedDate = dateStr; // Set fetch date to current date.
-
-      // TODO: Add this to the log file.
-      console.log("Fetched at", lastFetchedDate)
+      logger("Fetched at", lastFetchedDate);
     } else {
-      console.log("Data has been successfully retrieved earlier today!");
+      logger("Data has been successfully retrieved earlier today!");
     }
   } catch (error) {
-    
-    // TODO: Add this to the log file, with a given error.
-    console.log("An error occurred, trying again in 5 minutes until the next hour");
+    logger("An error occurred, trying again in 5 minutes until 14 o'clock.");
   }
 });
